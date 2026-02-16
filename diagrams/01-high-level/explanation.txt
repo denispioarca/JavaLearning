@@ -1,0 +1,263 @@
+1. Introduction
+
+This diagram presents the high-level architecture of Java, illustrating the complete flow from source code to execution on hardware.
+
+The main flow is:
+
+Java Source Code -> Compilation -> Bytecode -> Class Loading -> JVM Execution -> Operating System -> Hardware
+
+Each component has a clearly defined role in this process.
+
+2. Development Layer (JDK)
+
+This layer contains the tools used by developers to create Java applications.
+
+2.1 Java Source Code (.java)
+
+Represents the code written by the developer.
+
+It includes:
+
+classes
+
+methods
+
+variables
+
+application logic
+
+This code is text and cannot be executed directly by the machine.
+
+2.2 Java Compiler (javac)
+
+The compiler transforms .java files into .class files.
+
+This process is called compilation.
+
+The result is an intermediate, platform-independent format.
+
+2.3 Development Tools
+
+This category includes tools such as:
+
+debuggers
+
+documentation generators
+
+build tools
+
+Their role is to assist development, not runtime execution.
+
+3. Distribution Layer
+3.1 Bytecode (.class / .jar)
+
+Represents the output of compilation.
+
+Characteristics:
+
+platform independent
+
+executable by any JVM
+
+It can be distributed as:
+
+individual .class files
+
+packaged .jar archives
+
+This is where the concept “Write Once, Run Anywhere” applies.
+
+4. Runtime Layer (JRE)
+
+This layer provides the environment required to run Java applications.
+
+It includes:
+
+the Java Virtual Machine
+
+standard Java libraries
+
+4.1 Class Loader Subsystem
+
+Responsible for loading classes into memory.
+
+Classes are loaded on demand, not all at once.
+
+4.2 Loading Phases
+
+The loading process has three main stages:
+
+Loading
+The class is located and brought into memory.
+
+Linking
+Structure and dependencies are verified and resolved.
+
+Initialization
+Static initializations are executed.
+
+4.3 Core Libraries
+
+These are the standard Java packages.
+
+They provide functionality such as:
+
+collections
+
+input/output operations
+
+file handling
+
+networking
+
+5. Java Virtual Machine (JVM)
+
+The JVM is the core component that executes Java programs.
+
+Responsibilities include:
+
+instruction execution
+
+memory management
+
+performance optimization
+
+6. Runtime Data Areas (Memory)
+
+The JVM divides memory into multiple areas.
+
+6.1 Heap
+
+The area where objects and arrays are stored.
+
+It is shared across threads.
+
+Managed automatically by the Garbage Collector.
+
+6.2 Java Stack
+
+Each thread has its own stack.
+
+It contains:
+
+method calls
+
+local variables
+
+references
+
+Frames are removed when methods finish execution.
+
+6.3 Method Area
+
+Stores class-level information:
+
+metadata
+
+methods
+
+fields
+
+bytecode
+
+6.4 PC Register
+
+Holds the current instruction executed by each thread.
+
+Used to track execution flow.
+
+6.5 Native Method Stack
+
+Used for executing native (non-Java) methods.
+
+7. Execution Engine
+
+The Execution Engine runs the bytecode loaded into the JVM.
+
+7.1 Interpreter
+
+Executes bytecode instructions one by one.
+
+Fast startup, but slower for repeated execution.
+
+7.2 JIT Compiler (Just-In-Time)
+
+Identifies frequently executed code sections.
+
+Compiles them into native machine instructions.
+
+Improves performance after runtime warm-up.
+
+8. Garbage Collector
+
+Automatically manages memory in the Heap.
+
+Main responsibilities:
+
+identifies unused objects
+
+frees memory
+
+prevents excessive memory consumption
+
+Developers do not manage memory manually.
+
+9. Native Integration & Platform
+
+This layer enables interaction with the underlying platform.
+
+9.1 JNI (Java Native Interface)
+
+Allows Java code to call native code written in languages such as C or C++.
+
+Used for platform-dependent operations.
+
+9.2 Operating System
+
+The JVM relies on the OS for:
+
+thread management
+
+file operations
+
+networking
+
+memory allocation
+
+9.3 Hardware Layer
+
+The final execution level.
+
+Includes:
+
+CPU
+
+physical memory
+
+machine resources
+
+All instructions are ultimately executed here.
+
+10. Conclusion
+
+The complete process works as follows:
+
+The developer writes Java source code.
+
+The code is compiled into bytecode.
+
+Classes are loaded into the JVM.
+
+Memory is allocated automatically.
+
+Instructions are executed.
+
+Frequently used code is optimized.
+
+Unused memory is reclaimed.
+
+Native functions can be invoked.
+
+The OS and hardware execute the instructions.
+
+This architecture provides portability, safety, and optimized performance.

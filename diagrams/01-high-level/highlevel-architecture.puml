@@ -1,0 +1,101 @@
+@startuml
+title High-Level Java Architecture - End-to-End Execution Flow
+
+skinparam backgroundColor #FFFFFF
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam ArrowThickness 1.2
+skinparam ArrowColor #2F2F2F
+skinparam defaultFontName Arial
+
+' =========================
+' DEVELOPMENT LAYER (JDK)
+' =========================
+package "Development Layer (JDK)" {
+  component "Java Source Code (.java)\nDeveloper-written program" as SRC #E8F0FE
+  component "Java Compiler (javac)\nCompiles source -> bytecode" as JAVAC #E8F0FE
+  component "Dev Tools\nDebugger, Javadoc, build tools" as TOOLS #E8F0FE
+}
+
+' =========================
+' ARTIFACT LAYER
+' =========================
+package "Distribution / Artifacts" {
+  component "Bytecode (.class / .jar)\nPlatform-independent\nWrite Once, Run Anywhere" as BYTECODE #ECFDF5
+}
+
+' =========================
+' RUNTIME LAYER (JRE)
+' =========================
+package "Runtime Layer (JRE)" {
+  component "Class Loader Subsystem\nLoads classes into memory" as CLS #FFF7ED
+
+  package "Loading Phases" {
+    component "Loading" as LOAD #FFF7ED
+    component "Linking" as LINK #FFF7ED
+    component "Initialization" as INIT #FFF7ED
+  }
+
+  component "Core Libraries\njava.* / javax.* APIs" as LIBS #FFF7ED
+}
+
+' =========================
+' JVM CORE
+' =========================
+package "Java Virtual Machine (JVM)\nCore Execution Environment" {
+
+  package "Runtime Data Areas (Memory)" {
+    component "Heap\nObjects & Arrays" as HEAP #FDF2F8
+    component "Java Stack\nFrames & Method Calls" as STACK #FDF2F8
+    component "Method Area\nClass Metadata" as METHOD #FDF2F8
+    component "PC Register\nCurrent Instruction" as PC #FDF2F8
+    component "Native Method Stack" as NMS #FDF2F8
+  }
+
+  package "Execution Engine" {
+    component "Interpreter\nExecutes bytecode" as INTERP #F5F3FF
+    component "JIT Compiler\nOptimizes hot code -> native" as JIT #F5F3FF
+  }
+
+  component "Garbage Collector\nAutomatic memory management" as GC #FFFBEB
+}
+
+' =========================
+' NATIVE / OS / HARDWARE
+' =========================
+package "Native Integration & Platform" {
+  component "JNI (Java Native Interface)\nBridge to native libraries" as JNI #EFF6FF
+  component "Operating System\nThreads, files, network" as OS #EFF6FF
+  component "Hardware Layer\nCPU, Memory, Machine" as HW #F3F4F6
+}
+
+' =========================
+' FLOW CONNECTIONS
+' =========================
+SRC --> JAVAC : Compile
+JAVAC --> BYTECODE : Generate .class
+TOOLS ..> SRC : Assist development
+
+BYTECODE --> CLS : Load classes
+CLS --> LOAD
+CLS --> LINK
+CLS --> INIT
+
+CLS --> METHOD : Define classes
+LIBS --> BYTECODE : APIs used
+
+CLS --> INTERP : Execute
+INTERP --> HEAP : Object allocation
+INTERP --> STACK : Method frames
+
+INTERP --> JIT : Hot code detection
+JIT --> OS : Native code execution
+
+HEAP <-- GC : Memory cleanup
+
+INTERP --> JNI : Native calls
+JNI --> OS
+OS --> HW
+
+@enduml

@@ -1,0 +1,259 @@
+1. Introducere
+
+Aceasta diagrama prezinta modul de functionare al platformei Java la nivel general, de la codul scris de programator pana la executia efectiva pe calculator.
+
+Fluxul principal este urmatorul:
+
+Cod sursa Java -> Compilare -> Cod intermediar -> Incarcare in masina virtuala -> Executie -> Sistem de operare -> Echipament fizic
+
+Fiecare componenta are un rol clar in acest proces.
+
+2. Strat de dezvoltare (JDK)
+
+Acest strat contine uneltele folosite pentru crearea aplicatiilor Java.
+
+2.1 Cod sursa Java (.java)
+
+Reprezinta codul scris de programator.
+
+Include:
+
+clase
+
+metode
+
+variabile
+
+logica programului
+
+Acest cod este text si nu poate fi executat direct de calculator.
+
+2.2 Compilatorul Java (javac)
+
+Compilatorul transforma fisierele .java in fisiere .class.
+
+Procesul se numeste compilare.
+
+Rezultatul este un cod intermediar, independent de sistemul de operare.
+
+2.3 Unelte de dezvoltare
+
+Acestea includ:
+
+instrumente de depanare
+
+generatoare de documentatie
+
+unelte de construire a aplicatiei
+
+Rolul lor este de a ajuta programatorul in procesul de dezvoltare.
+
+3. Strat de distributie
+3.1 Codul intermediar (.class / .jar)
+
+Reprezinta rezultatul compilarii.
+
+Caracteristici:
+
+nu depinde de platforma
+
+poate fi executat pe orice masina virtuala Java
+
+Poate fi distribuit sub forma de fisiere individuale sau arhive.
+
+Acest nivel permite rularea aceleiasi aplicatii pe sisteme diferite.
+
+4. Strat de rulare (JRE)
+
+Acest strat contine mediul necesar executiei aplicatiei.
+
+Include:
+
+masina virtuala Java
+
+bibliotecile standard
+
+4.1 Sub-sistemul de incarcare a claselor
+
+Are rolul de a incarca in memorie clasele necesare executiei.
+
+Clasele nu sunt incarcate toate de la inceput, ci doar cand sunt folosite.
+
+4.2 Etapele incarcarii
+
+Procesul are trei etape:
+
+Incarcare
+Clasa este gasita si adusa in memorie.
+
+Legare
+Se verifica structura si dependintele.
+
+Initializare
+Se executa initializarile statice.
+
+4.3 Biblioteci de baza
+
+Reprezinta pachetele standard ale limbajului.
+
+Ofera functionalitati precum:
+
+colectii de date
+
+operatii de intrare/iesire
+
+lucrul cu fisiere
+
+comunicare in retea
+
+5. Masina virtuala Java (JVM)
+
+Este componenta centrala care executa programul.
+
+Responsabilitati:
+
+executia instructiunilor
+
+administrarea memoriei
+
+optimizarea performantei
+
+6. Zonele de memorie la rulare
+
+Masina virtuala imparte memoria in mai multe zone.
+
+6.1 Heap
+
+Zona unde sunt stocate obiectele si tablourile.
+
+Este comuna tuturor firelor de executie.
+
+Este administrata automat.
+
+6.2 Stiva Java
+
+Fiecare fir de executie are propria stiva.
+
+Contine:
+
+apeluri de metode
+
+variabile locale
+
+referinte
+
+La finalul metodei, datele sunt eliminate.
+
+6.3 Zona de metode
+
+Contine informatii despre clase:
+
+descrieri
+
+metode
+
+campuri
+
+codul intermediar
+
+6.4 Registrul de program
+
+Indica instructiunea curenta executata de fiecare fir.
+
+Ajuta la urmarirea fluxului de executie.
+
+6.5 Stiva metodelor native
+
+Este folosita pentru executia codului scris in alte limbaje.
+
+7. Motorul de executie
+
+Acesta executa instructiunile programului.
+
+7.1 Interpretul
+
+Executa instructiunile una cate una.
+
+Este rapid la pornire, dar mai lent in executii repetate.
+
+7.2 Compilatorul dinamic
+
+Identifica portiunile de cod executate frecvent.
+
+Le transforma in instructiuni specifice procesorului.
+
+Rezultatul este o viteza mai mare de executie.
+
+8. Colectorul de memorie
+
+Administreaza automat memoria din Heap.
+
+Functii principale:
+
+identifica obiectele neutilizate
+
+elibereaza memoria
+
+mentine stabilitatea aplicatiei
+
+Programatorul nu trebuie sa gestioneze manual memoria.
+
+9. Integrarea cu platforma
+
+Acest strat permite interactiunea cu sistemul de operare.
+
+9.1 Interfata nativa Java
+
+Permite apelarea codului scris in alte limbaje.
+
+Este folosita pentru operatii dependente de platforma.
+
+9.2 Sistemul de operare
+
+Masina virtuala foloseste sistemul de operare pentru:
+
+gestionarea firelor
+
+lucrul cu fisiere
+
+comunicarea in retea
+
+administrarea memoriei
+
+9.3 Echipamentul fizic
+
+Nivelul final al executiei.
+
+Include:
+
+procesorul
+
+memoria fizica
+
+componentele calculatorului
+
+Aici sunt executate efectiv instructiunile.
+
+10. Concluzie
+
+Procesul complet functioneaza astfel:
+
+Programatorul scrie codul sursa.
+
+Codul este compilat in cod intermediar.
+
+Clasele sunt incarcate in masina virtuala.
+
+Memoria este alocata automat.
+
+Instructiunile sunt executate.
+
+Codul frecvent este optimizat.
+
+Memoria neutilizata este eliberata.
+
+Se pot apela functii native.
+
+Sistemul de operare si echipamentul executa instructiunile.
+
+Aceasta arhitectura permite portabilitate, siguranta si performanta ridicata.
