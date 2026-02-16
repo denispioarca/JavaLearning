@@ -1,0 +1,198 @@
+1. Introducere
+
+Aceasta diagrama prezinta modul in care sunt incarcate clasele in masina virtuala Java prin mecanismul numit model de delegare al incarcatoarelor de clase.
+
+Scopul acestui mecanism este:
+
+securitate
+
+evitarea duplicarii claselor
+
+consistenta la rulare
+
+Fluxul incepe din aplicatie si urca ierarhic pana la incarcatorul de nivel maxim.
+
+2. Punctul de pornire al aplicatiei
+Aplicatia Java (clasa principala)
+
+Executia incepe din clasa principala a aplicatiei.
+
+In momentul in care aplicatia are nevoie de o clasa noua, aceasta nu este incarcata direct, ci cererea este trimisa catre incarcatorul aplicatiei.
+
+Acesta reprezinta primul nivel din lantul de incarcare.
+
+3. Ierarhia incarcatoarelor de clase
+
+Masina virtuala foloseste o structura ierarhica formata din trei incarcatoare principale.
+
+3.1 Bootstrap ClassLoader
+
+Este incarcatorul de nivel maxim.
+
+Caracteristici:
+
+are cea mai mare prioritate
+
+este implementat in cod nativ
+
+incarca clasele de baza ale limbajului
+
+Exemple de pachete incarcate:
+
+java.lang
+
+java.util
+
+Acest incarcator asigura fundatia functionarii platformei Java.
+
+3.2 Platform ClassLoader
+
+Este nivelul intermediar.
+
+Rolul sau este de a incarca bibliotecile platformei Java, care extind functionalitatile de baza.
+
+Exemple:
+
+java.sql
+
+java.xml
+
+Functioneaza doar daca incarcatorul superior nu a gasit clasa solicitata.
+
+3.3 Application ClassLoader
+
+Este incarcatorul aplicatiei.
+
+Are rolul de a incarca:
+
+clasele aplicatiei
+
+biblioteci externe
+
+fisiere din classpath
+
+Acesta este ultimul nivel din lantul de delegare.
+
+4. Sursele claselor
+
+Clasele pot proveni din mai multe locuri.
+
+4.1 Biblioteci de baza Java
+
+Reprezinta clasele standard ale limbajului.
+
+Acestea sunt incarcate de Bootstrap ClassLoader.
+
+4.2 Biblioteci ale platformei
+
+Reprezinta modulele suplimentare ale platformei Java.
+
+Sunt incarcate de Platform ClassLoader.
+
+4.3 Clasele aplicatiei
+
+Reprezinta codul scris de programator sau dependintele externe.
+
+Sunt incarcate de Application ClassLoader.
+
+5. Zona de memorie tinta
+
+Clasele incarcate nu sunt executate direct, ci sunt stocate in zona de memorie dedicata metadatelor claselor.
+
+Aceasta zona este cunoscuta ca:
+
+Method Area sau Metaspace.
+
+Aici sunt stocate:
+
+descrierea claselor
+
+metodele
+
+campurile
+
+informatiile structurale
+
+6. Fluxul de delegare
+
+Mecanismul functioneaza dupa regula delegarii catre parinte.
+
+Pasii sunt urmatorii:
+
+Aplicatia solicita incarcarea unei clase.
+
+Application ClassLoader primeste cererea.
+
+Cererea este delegata catre Platform ClassLoader.
+
+Platform delega mai departe catre Bootstrap.
+
+Bootstrap cauta clasa in bibliotecile de baza.
+
+Daca o gaseste:
+
+o incarca
+
+o plaseaza in zona de metadate
+
+Daca nu o gaseste:
+
+Cererea coboara inapoi la Platform ClassLoader.
+
+Acesta cauta in bibliotecile platformei.
+
+Daca o gaseste, o incarca.
+
+Daca nici aici nu este gasita:
+
+Cererea ajunge inapoi la Application ClassLoader.
+
+Acesta cauta in clasele aplicatiei.
+
+Daca o gaseste, o incarca.
+
+7. Principiul prioritatii
+
+Ordinea de cautare este fixa:
+
+Bootstrap ClassLoader
+
+Platform ClassLoader
+
+Application ClassLoader
+
+Aceasta ordine previne suprascrierea claselor critice.
+
+De exemplu, o aplicatie nu poate inlocui clasa java.lang.String.
+
+8. Avantajele modelului de delegare
+
+Acest mecanism ofera mai multe beneficii:
+
+Securitate
+Clasele de baza sunt protejate.
+
+Consistenta
+O clasa este incarcata o singura data.
+
+Izolare
+Clasele aplicatiei nu interfereaza cu cele interne.
+
+Stabilitate
+Se evita conflictele de dependinte.
+
+9. Concluzie
+
+Modelul de delegare al incarcatoarelor de clase functioneaza astfel:
+
+cererea porneste din aplicatie
+
+urca ierarhic catre incarcatorul superior
+
+cautarea se face de sus in jos
+
+clasa este incarcata de primul incarcator care o gaseste
+
+metadatele sunt stocate in zona dedicata
+
+Acest mecanism este esential pentru securitatea si stabilitatea executiei aplicatiilor Java.

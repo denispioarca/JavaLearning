@@ -1,0 +1,200 @@
+1. Introduction
+
+This diagram illustrates how classes are loaded inside the Java Virtual Machine through the mechanism known as the ClassLoader Delegation Model.
+
+The purpose of this mechanism is to ensure:
+
+security
+
+class uniqueness
+
+runtime consistency
+
+The loading request starts from the application and travels upward through the ClassLoader hierarchy.
+
+2. Application Entry Point
+Java Application (Main Class)
+
+Execution begins from the main class of the application.
+
+When the application needs a class, it does not load it directly. Instead, the request is sent to the Application ClassLoader.
+
+This represents the first level in the loading chain.
+
+3. ClassLoader Hierarchy
+
+The Java Virtual Machine uses a hierarchical structure composed of three primary class loaders.
+
+3.1 Bootstrap ClassLoader
+
+This is the highest-level class loader.
+
+Characteristics:
+
+highest priority
+
+implemented in native code
+
+loads core Java classes
+
+Examples of loaded packages:
+
+java.lang
+
+java.util
+
+It provides the foundation required for the Java platform to operate.
+
+3.2 Platform ClassLoader
+
+This is the intermediate level.
+
+Its role is to load platform-related libraries that extend core functionality.
+
+Examples include:
+
+java.sql
+
+java.xml
+
+It only loads classes if the parent loader does not find them.
+
+3.3 Application ClassLoader
+
+This is the class loader of the application itself.
+
+It loads:
+
+application classes
+
+external libraries
+
+classes from the classpath
+
+It represents the last level in the delegation chain.
+
+4. Class Sources
+
+Classes can originate from multiple sources.
+
+4.1 Java Core Libraries
+
+These are the standard Java language classes.
+
+They are loaded by the Bootstrap ClassLoader.
+
+4.2 Platform Libraries
+
+These are platform modules extending core functionality.
+
+They are loaded by the Platform ClassLoader.
+
+4.3 Application Classes
+
+These include developer-written classes and external dependencies.
+
+They are loaded by the Application ClassLoader.
+
+5. Target Memory Area
+
+Loaded classes are not executed immediately.
+
+They are stored in a dedicated memory area for class metadata.
+
+This area is known as:
+
+Method Area or Metaspace.
+
+It stores:
+
+class definitions
+
+methods
+
+fields
+
+structural metadata
+
+6. Delegation Flow
+
+The mechanism follows the parent delegation rule.
+
+The process works as follows:
+
+The application requests a class.
+
+The Application ClassLoader receives the request.
+
+The request is delegated to the Platform ClassLoader.
+
+The Platform loader delegates to the Bootstrap loader.
+
+The Bootstrap loader searches for the class.
+
+If found:
+
+it loads the class
+
+stores metadata in memory
+
+If not found:
+
+The request returns to the Platform ClassLoader.
+
+It searches platform libraries.
+
+If found, it loads the class.
+
+If still not found:
+
+The request returns to the Application ClassLoader.
+
+It searches application classes.
+
+If found, it loads the class.
+
+7. Priority Principle
+
+The search order is fixed:
+
+Bootstrap ClassLoader
+
+Platform ClassLoader
+
+Application ClassLoader
+
+This prevents overriding critical system classes.
+
+For example, an application cannot replace java.lang.String.
+
+8. Advantages of the Delegation Model
+
+This mechanism provides several benefits.
+
+Security
+Core classes are protected.
+
+Consistency
+A class is loaded only once.
+
+Isolation
+Application classes do not interfere with internal classes.
+
+Stability
+Dependency conflicts are minimized.
+
+9. Conclusion
+
+The ClassLoader Delegation Model operates as follows:
+
+the request starts in the application
+
+it moves upward through the hierarchy
+
+the search occurs from parent to child
+
+the first loader that finds the class loads it
+
+metadata is stored in the dedicated memory area
+
+This mechanism is fundamental to the security and stability of Java application execution.

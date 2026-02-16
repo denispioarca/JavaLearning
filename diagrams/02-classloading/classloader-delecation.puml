@@ -1,0 +1,82 @@
+@startuml
+title Java ClassLoader Delegation Model - Deep Dive
+
+skinparam backgroundColor #FFFFFF
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam ArrowThickness 1.2
+skinparam ArrowColor #2F2F2F
+skinparam defaultFontName Arial
+
+' =========================
+' APPLICATION ENTRY
+' =========================
+component "Java Application\n(Main Class Execution)" as APP #E8F0FE
+
+' =========================
+' CLASSLOADER HIERARCHY
+' =========================
+package "ClassLoader Hierarchy" {
+
+component "Bootstrap ClassLoader\nLoads core Java classes\n(java.lang, java.util)" as BOOT #FFF7ED
+
+component "Platform ClassLoader\nLoads platform libraries\n(java.sql, java.xml)" as PLATFORM #FFF7ED
+
+component "Application ClassLoader\nLoads classes from\nclasspath / application" as APPCL #FFF7ED
+}
+
+' =========================
+' CLASS SOURCES
+' =========================
+package "Class Sources" {
+
+component "Java Core Libraries\n(rt.jar / modules)" as CORE #ECFDF5
+
+component "Platform Libraries\n(Java modules)" as PLIB #ECFDF5
+
+component "Application Classes\n(.class / .jar)" as ACLASS #ECFDF5
+}
+
+' =========================
+' JVM MEMORY TARGET
+' =========================
+component "Method Area / Metaspace\n(Class metadata storage)" as METHOD #FDF2F8
+
+' =========================
+' DELEGATION FLOW
+' =========================
+
+APP --> APPCL : Requests class load
+
+APPCL --> PLATFORM : Delegates request
+PLATFORM --> BOOT : Delegates request
+
+BOOT --> CORE : Searches class
+CORE --> BOOT : Class found
+
+BOOT --> METHOD : Loads metadata
+
+PLATFORM --> PLIB : Searches if not found above
+PLIB --> PLATFORM
+PLATFORM --> METHOD
+
+APPCL --> ACLASS : Searches if not found above
+ACLASS --> APPCL
+APPCL --> METHOD
+
+' =========================
+' NOTES
+' =========================
+note right of BOOT
+Highest priority loader.
+Written in native code.
+Loads core Java classes.
+end note
+
+note right of APPCL
+Loads application code.
+Searches last in delegation chain.
+end note
+
+@enduml
